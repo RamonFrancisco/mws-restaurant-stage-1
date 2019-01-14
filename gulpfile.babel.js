@@ -9,16 +9,18 @@ import bs from 'browser-sync';
 
 const paths = {
     src: {
-        styles: 'src/styles/**/*.scss',
-        scripts: 'src/scripts/**/*.js',
+        data: 'src/data/**/*.json',
+        html: 'src/**/*.html',
         images: 'src/img/**/*.jpg',
-        html: 'src/**/*.html'
+        styles: 'src/styles/**/*.scss',
+        scripts: 'src/scripts/**/*.js'
     },
     build: {
-        styles: 'build/css/',
-        scripts: 'build/js/',
+        data: 'build/data/',
+        html: 'build/',
         images: 'build/img/',
-        html: 'build/'
+        styles: 'build/css/',
+        scripts: 'build/js/'
     }
 }
 
@@ -33,7 +35,10 @@ const compileMarkup = () => {
 const compileStyle = () => {
     return gulp.src(paths.src.styles)
         .pipe(sourceMaps.init() )
-        .pipe(sass({outputStyle: 'compressed'})
+        .pipe(sass({
+            outputStyle: 'compressed', 
+            includePaths: ['src/styles']
+        })
             .on('error', sass.logError))
         .pipe(sourceMaps.write('.'))
         .pipe(gulp.dest(paths.build.styles))
@@ -50,13 +55,21 @@ const compileScript = () => {
         .pipe(bs.stream());
 }
 
-const compile = gulp.series(clean, gulp.parallel([compileMarkup, compileStyle, compileScript]));
-compile.description = 'compile all files'
-
-const reload = (done) => {
-    serve.reload;
-    done();
+const compileData = () => {
+    return gulp.src(paths.src.data)
+        .pipe(gulp.dest(paths.build.data));
 }
+
+const compileImage = () => {
+    return gulp.src(paths.src.images)
+        .pipe(images({
+            progressive: true
+        }))
+        .pipe(gulp.dest(paths.build.images));
+}
+
+const compile = gulp.series(clean, gulp.parallel([compileMarkup, compileStyle, compileScript, compileImage, compileData]));
+compile.description = 'compile all files'
 
 const serve = gulp.parallel(compile, () => {
     bs.create().init({
@@ -70,11 +83,12 @@ const serve = gulp.parallel(compile, () => {
 });
 serve.description = 'serve compiled source on local server at port 8888'
 
+const watchImage = () => gulp.watch(paths.src.images, gulp.series(compileImage, compileMarkup));
 const watchStyle = () => gulp.watch(paths.src.styles, gulp.series(compileStyle, compileMarkup));
 const watchScript = () => gulp.watch(paths.src.scripts, gulp.series(compileScript, compileMarkup) );
 const watchMarkup = () => gulp.watch(paths.src.html, compileMarkup);
 
-const watch = gulp.parallel(watchMarkup, watchStyle, watchScript);
+const watch = gulp.parallel(watchMarkup, watchStyle, watchScript, watchImage);
 watch.description = 'watch for changes to all files'
 
 const defaultTasks = gulp.parallel([serve, watch]);
