@@ -9,18 +9,19 @@
             padding: 20px 0;
             font-size: 0;
     
-            a {
-                color: #fff;
-                font-size: 1rem;
-                font-weight: 100;
-                letter-spacing: 3px;
-                text-transform: uppercase;
+        }
+        
+        a {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 100;
+            letter-spacing: 3px;
+            text-transform: uppercase;
 
-                &:hover,
-                &:focus {
-                    color: #0275d8;
-	                text-decoration: none;
-                }
+            &:hover,
+            &:focus {
+                color: #0275d8;
+                text-decoration: none;
             }
         }
     }

@@ -1,0 +1,22 @@
+.container {
+    max-width: 100%;
+    
+    @media (min-width: 768px) {
+        max-width: 1320px;
+        margin: 0 auto;
+    }
+}
+
+#maincontent {
+    background-color: #f3f3f3;
+    min-height: 100%;
+    max-width: 100%;
+}
+
+a {
+	color: orange;
+    text-decoration: none;
+}
+a img{
+	border: none 0px #fff;
+}

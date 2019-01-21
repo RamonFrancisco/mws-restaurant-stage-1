@@ -1,0 +1,34 @@
+#breadcrumb {
+    padding: 15px 20px;
+    list-style: none;
+    background-color: #eee;
+    font-size: 1rem;
+    margin: 0;
+    width: 100%;
+    font-family: sans-serif;
+    
+    @media (min-width: 768px) {
+        width: calc(50% - 80px);
+    }
+
+    li {
+        display: inline;
+
+        & + li {
+            &::before {
+                color: black;
+                content: "/\00a0";
+            }
+        } 
+
+        a {
+            color: #0275d8;
+            text-decoration: none;
+
+            &:hover {
+                color: #01447e;
+                text-decoration: underline;
+            }
+        }
+    }
+}
