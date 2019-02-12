@@ -12,6 +12,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	fetchCuisines();
 });
 
+document.addEventListener('load', () => {
+	registerServiceWorker();
+});
+
+// Register Service Worker
+const registerServiceWorker = () => {
+	if (!navigator.serviceWorker) return;
+
+	navigator.serviceWorker.register('/sw.js')
+	.then(register => console.log(register))
+	.catch(err => console.log(err));
+};
+
+
 /**
 * Set neighborhoods HTML.
 */
