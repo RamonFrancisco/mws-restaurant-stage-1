@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	fetchCuisines();
 });
 
-document.addEventListener('load', () => {
+window.addEventListener('load', () => {
 	registerServiceWorker();
 });
 
@@ -20,7 +20,7 @@ document.addEventListener('load', () => {
 const registerServiceWorker = () => {
 	if (!navigator.serviceWorker) return;
 
-	navigator.serviceWorker.register('/sw.js')
+	navigator.serviceWorker.register('./sw/sw.js')
 	.then(register => console.log(register))
 	.catch(err => console.log(err));
 };
@@ -164,7 +164,7 @@ function createRestaurantHTML (restaurant) {
     image.alt = restaurant.name;
 	li.append(image);
 	
-    const name = document.createElement('h2');
+    const name = document.createElement('h3');
     name.className = 'restaurant-name';
 	name.innerHTML = restaurant.name;
 	li.append(name);

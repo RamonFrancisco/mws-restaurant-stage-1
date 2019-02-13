@@ -13,18 +13,27 @@ const paths = {
         html: 'src/**/*.html',
         images: 'src/img/**/*.jpg',
         styles: 'src/styles/**/*.scss',
-        scripts: 'src/scripts/**/*.js'
+        scripts: 'src/scripts/**/*.js',
+        sw: 'src/sw/sw.js'
     },
     build: {
         data: 'build/data/',
         html: 'build/',
         images: 'build/img/',
         styles: 'build/css/',
-        scripts: 'build/js/'
+        scripts: 'build/js/',
+        sw: 'build/sw/'
     }
 }
 
 const clean = () => del(['assets']);
+
+const compileServiveWorker = () => {
+    return gulp.src(paths.src.sw)
+        .pipe(babel())
+        .pipe(uglify())
+        .pipe(gulp.dest(paths.build.sw));
+}
 
 const compileMarkup = () => {
     return gulp.src(paths.src.html)
@@ -68,7 +77,13 @@ const compileImage = () => {
         .pipe(gulp.dest(paths.build.images));
 }
 
-const compile = gulp.series(clean, gulp.parallel([compileMarkup, compileStyle, compileScript, compileImage, compileData]));
+const compile = gulp.series(clean, gulp.parallel([
+    compileServiveWorker,
+    compileMarkup,
+    compileStyle,
+    compileScript,
+    compileImage,
+    compileData]));
 compile.description = 'compile all files'
 
 const serve = gulp.parallel(compile, () => {
@@ -83,23 +98,26 @@ const serve = gulp.parallel(compile, () => {
 });
 serve.description = 'serve compiled source on local server at port 8888'
 
+const watchSw = () => gulp.watch(paths.src.sw, gulp.series(compileServiveWorker, compileMarkup));
 const watchImage = () => gulp.watch(paths.src.images, gulp.series(compileImage, compileMarkup));
 const watchStyle = () => gulp.watch(paths.src.styles, gulp.series(compileStyle, compileMarkup));
 const watchScript = () => gulp.watch(paths.src.scripts, gulp.series(compileScript, compileMarkup) );
 const watchMarkup = () => gulp.watch(paths.src.html, compileMarkup);
 
-const watch = gulp.parallel(watchMarkup, watchStyle, watchScript, watchImage);
+const watch = gulp.parallel(watchMarkup, watchStyle, watchScript, watchImage, watchSw);
 watch.description = 'watch for changes to all files'
 
 const defaultTasks = gulp.parallel([serve, watch]);
 
 export {
     compile,
+    compileServiveWorker,
     compileMarkup,
     compileScript,
     compileStyle,
     serve,
     watch,
+    watchSw,
     watchMarkup,
     watchScript,
     watchStyle

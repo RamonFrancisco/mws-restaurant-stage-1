@@ -1,4 +1,4 @@
-let staticCacheName = 'restaurant-review-02';
+let staticCacheName = 'restaurant-review-03';
 
 self.addEventListener('install', event => {
 	event.waitUntil(
@@ -6,7 +6,7 @@ self.addEventListener('install', event => {
 		.then(cache => cache.addAll([
 			'/',
 			'/index.html',
-			'/css/styles.css',
+			'/css/main.css',
 			'/img/1.jpg',
 			'/img/2.jpg',
 			'/img/3.jpg',

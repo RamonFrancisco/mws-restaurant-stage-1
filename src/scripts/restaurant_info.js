@@ -56,7 +56,8 @@ function fillRestaurantHTML(restaurant = self.restaurant) {
     address.innerHTML = restaurant.address;
     
     const image = document.getElementById('restaurant-img');
-    image.className = 'restaurant-img'
+    image.className = 'restaurant-img';
+    image.alt = restaurant.name;
     image.src = DBHelper.imageUrlForRestaurant(restaurant);
     
     const cuisine = document.getElementById('restaurant-cuisine');
@@ -95,7 +96,7 @@ function fillRestaurantHoursHTML(operatingHours = self.restaurant.operating_hour
 */
 function fillReviewsHTML(reviews = self.restaurant.reviews) {
     const container = document.getElementById('reviews-container');
-    const title = document.createElement('h2');
+    const title = document.createElement('h3');
     title.classList.add('review-title')
     title.innerHTML = 'Reviews';
     container.appendChild(title);
@@ -155,8 +156,9 @@ function createReviewHTML(review) {
 * Add restaurant name to the breadcrumb navigation menu
 */
 function fillBreadcrumb(restaurant=self.restaurant) {
-    const breadcrumb = document.getElementById('breadcrumb');
+    const breadcrumb = document.querySelector('.breadcrumb ul');
     const li = document.createElement('li');
+    li.setAttribute('aria-current', 'page');
     li.innerHTML = restaurant.name;
     breadcrumb.appendChild(li);
 }
