@@ -20,11 +20,10 @@ window.addEventListener('load', () => {
 const registerServiceWorker = () => {
 	if (!navigator.serviceWorker) return;
 
-	navigator.serviceWorker.register('./sw/sw.js')
+	navigator.serviceWorker.register('./sw.js')
 	.then(register => console.log(register))
 	.catch(err => console.log(err));
 };
-
 
 /**
 * Set neighborhoods HTML.

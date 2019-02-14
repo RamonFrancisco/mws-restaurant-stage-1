@@ -22,7 +22,7 @@ const paths = {
         images: 'build/img/',
         styles: 'build/css/',
         scripts: 'build/js/',
-        sw: 'build/sw/'
+        sw: 'build/'
     }
 }
 
